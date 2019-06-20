@@ -1,0 +1,11 @@
+/Blockchain/obj/Debug/netcoreapp2.2/Blockchain.csprojAssemblyReference.cache
+/Blockchain/obj/Debug/netcoreapp2.2/Blockchain.csproj.CoreCompileInputs.cache
+/Blockchain/obj/Debug/netcoreapp2.2/Blockchain.AssemblyInfoInputs.cache
+/Blockchain/obj/Debug/netcoreapp2.2/Blockchain.AssemblyInfo.cs
+/Blockchain/bin/Debug/netcoreapp2.2/Blockchain.deps.json
+/Blockchain/bin/Debug/netcoreapp2.2/Blockchain.runtimeconfig.json
+/Blockchain/bin/Debug/netcoreapp2.2/Blockchain.runtimeconfig.dev.json
+/Blockchain/bin/Debug/netcoreapp2.2/Blockchain.dll
+/Blockchain/bin/Debug/netcoreapp2.2/Blockchain.pdb
+/Blockchain/obj/Debug/netcoreapp2.2/Blockchain.dll
+/Blockchain/obj/Debug/netcoreapp2.2/Blockchain.pdb
