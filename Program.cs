@@ -78,7 +78,30 @@ namespace Blockchain
             Console.WriteLine("Testing GetSnapshot");
             result = httpInstance.GetSnapshot(httpInstance, 0);
             Console.WriteLine(result);
+
+            Console.WriteLine("Testing CoinSupply");
+            result = httpInstance.CoinSupply(httpInstance,0);       //ERROR: Could not Calculate Supply
+            Console.WriteLine(result);
             
+            Console.WriteLine("Testing GetBestBlockHash");
+            result = httpInstance.GetBestBlockHash(httpInstance);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetBlock");
+            result = httpInstance.GetBlock(httpInstance, "027e3758c3a65b12aa1046462b486d0a63bfa1beae327897f56c5cfb7daaae71",false);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetBlockChainInfo");
+            result = httpInstance.GetBlockChainInfo(httpInstance);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetBlockCount");
+            result = httpInstance.GetBlockCount(httpInstance);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetBlockHash");
+            result = httpInstance.GetBlockHash(httpInstance, 0);
+            Console.WriteLine(result);
         }
 
         public string GetWalletInfo(WebRequestPostExample httpInstance)
@@ -160,6 +183,11 @@ namespace Blockchain
             return result;
         }
 
+/*
+
+ADDRESS COMMANDS
+
+ */
         public string GetAddressBalance(WebRequestPostExample httpInstance, List<String> addresses)
         {
             String addr_list = "[";
@@ -257,6 +285,77 @@ namespace Blockchain
             string json = httpInstance.CreateJsonRequest("getsnapshot","[" + "\"top.ToString()\"" +  "]" );
             string result = CallHttpRequest(json);
             return result;
+        }
+
+
+/*
+BLOCKCHAIN COMMANDS
+ */
+
+    
+        public string CoinSupply(WebRequestPostExample httpInstance, int height)
+        {
+
+            string json;
+
+            if(height>1)
+            {
+                json = httpInstance.CreateJsonRequest("coinsupply","[" + "\"height.ToString()\"" +  "]" );
+            }
+            else
+            {
+                json = httpInstance.CreateJsonRequest("coinsupply","[" +  "]" );
+            }
+
+            string result = CallHttpRequest(json);
+            return result;
+
+        }
+
+
+        public string GetBestBlockHash(WebRequestPostExample httpInstance)
+        {
+
+            string json = httpInstance.CreateJsonRequest("getbestblockhash","["  +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetBlock(WebRequestPostExample httpInstance, string block_id, Boolean verbose)
+        {
+            /*
+            BLOCK ID CAN ONLY BE PASSED IN AS A STRING
+             */
+
+            string json = httpInstance.CreateJsonRequest("getblock","[" + "\"" + block_id + "\"" +  "," + verbose.ToString().ToLower() + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetBlockChainInfo(WebRequestPostExample httpInstance)
+        {
+            string json = httpInstance.CreateJsonRequest("getblockchaininfo","[" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetBlockCount(WebRequestPostExample httpInstance)
+        {
+            string json = httpInstance.CreateJsonRequest("getblockcount","[" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetBlockHash(WebRequestPostExample httpInstance, int index)
+        {
+            string json = httpInstance.CreateJsonRequest("getblockhash","[" + index.ToString()  + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetBlockHashes(WebRequestPostExample httpInstance, int high, int low, Boolean orphans,Boolean logical_times)
+        {
+            
         }
         public string CallHttpRequest(string json_request_data)
         {
