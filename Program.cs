@@ -102,6 +102,81 @@ namespace Blockchain
             Console.WriteLine("Testing GetBlockHash");
             result = httpInstance.GetBlockHash(httpInstance, 0);
             Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetBlockHashes");
+            result = httpInstance.GetBlockHashes(httpInstance, 0,1,true,true);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetBlockHeader");
+            result = httpInstance.GetBlockHeader(httpInstance,"027e3758c3a65b12aa1046462b486d0a63bfa1beae327897f56c5cfb7daaae71", true );
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetChainTips");
+            result = httpInstance.GetChainTips(httpInstance);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetChainTxStats");
+            result = httpInstance.GetChainTxStats(httpInstance,0,"027e3758c3a65b12aa1046462b486d0a63bfa1beae327897f56c5cfb7daaae71");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetDifficulty");
+            result = httpInstance.GetDifficulty(httpInstance);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetlastSegIDStakes");
+            result = httpInstance.GetLastSegIdStakes(httpInstance,1);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetMemPoolInfo");
+            result = httpInstance.GetMemPoolInfo(httpInstance);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetRawMemPool");
+            result = httpInstance.GetRawMempool(httpInstance,true);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetSpentInfo");
+            result = httpInstance.GetSpentInfo(httpInstance,"ff2c4c0c0d55310c2f7e9105e2fdbdb1496049e1b7f193d7f69d7a5b662fc610", 0);  //ERROR: UNABLE TO GET SPENT INFO
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetTxOut");
+            result = httpInstance.GetTxOut(httpInstance,"ff2c4c0c0d55310c2f7e9105e2fdbdb1496049e1b7f193d7f69d7a5b662fc610", 0, false);
+            Console.WriteLine(result);
+
+
+            string[] test_input = {"ff2c4c0c0d55310c2f7e9105e2fdbdb1496049e1b7f193d7f69d7a5b662fc610"};
+            Console.WriteLine("Testing GetTxOutProof");
+            result = httpInstance.GetTxOutProof(httpInstance,new List<String>(test_input), "027e3758c3a65b12aa1046462b486d0a63bfa1beae327897f56c5cfb7daaae71");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetTxOutSetInfo");
+            result = httpInstance.GetTxOutSetInfo(httpInstance);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing KvSearch");
+            result = httpInstance.KvSearch(httpInstance, "key");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing KvUpdate");
+            result = httpInstance.KvUpdate(httpInstance, "key","value", 0, "password"); //ERROR:INSUFFICIENT FUNDS.
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing MinerIds");
+            result = httpInstance.MinerIds(httpInstance, 0); //ERROR: COULD NOT EXTRACT MINER IDS.
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Notaries");
+            result = httpInstance.Notaries(httpInstance,1,1); 
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing VerifyChain");
+            result = httpInstance.VerifyChain(httpInstance,0,0); 
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing VerifyTxOutProof");
+            result = httpInstance.VerifyTxOutProof(httpInstance,"null");    //ERROR: NEED HEX STRING TO CHECK.
+            Console.WriteLine(result);
+            
         }
 
         public string GetWalletInfo(WebRequestPostExample httpInstance)
@@ -355,7 +430,162 @@ BLOCKCHAIN COMMANDS
 
         public string GetBlockHashes(WebRequestPostExample httpInstance, int high, int low, Boolean orphans,Boolean logical_times)
         {
-            
+            string options = "{\"noOrphans\":" + orphans.ToString().ToLower() + "," + "\"logicalTimes\":" + logical_times.ToString().ToLower() + "}" ;
+            string json = httpInstance.CreateJsonRequest("getblockhashes","["  + high.ToString()  + ","  + low.ToString() + "," + options + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetBlockHeader(WebRequestPostExample httpInstance, string hash, Boolean verbose)
+        {
+            string json = httpInstance.CreateJsonRequest("getblockheader","[" + "\"" + hash.ToString()  + "\"" + ","  + verbose.ToString().ToLower()   + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetChainTxStats(WebRequestPostExample httpInstance, int num_blocks, string blockhash)
+        {
+            string json = httpInstance.CreateJsonRequest("getchaintxstats","["  + num_blocks.ToString()  + ","  + "\"" + blockhash +"\""  + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetDifficulty(WebRequestPostExample httpInstance)
+        {
+            string json = httpInstance.CreateJsonRequest("getdifficulty","[" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetLastSegIdStakes(WebRequestPostExample httpInstance, int depth)
+        {
+            string json = httpInstance.CreateJsonRequest("getlastsegidstakes","[" + depth.ToString() + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetChainTips(WebRequestPostExample httpInstance)
+        {
+            string json = httpInstance.CreateJsonRequest("getchaintips","[" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetMemPoolInfo(WebRequestPostExample httpInstance)
+        {
+            string json = httpInstance.CreateJsonRequest("getmempoolinfo","[" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetRawMempool(WebRequestPostExample httpInstance, Boolean verbose)
+        {
+            string json = httpInstance.CreateJsonRequest("getrawmempool","[" + verbose.ToString().ToLower() +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetSpentInfo(WebRequestPostExample httpInstance, string txid, int index)
+        {
+            string options = "{\"txid\":" + "\"" + txid.ToLower() + "\"" + "," + "\"index\":" + index.ToString() + "}";
+            string json = httpInstance.CreateJsonRequest("getspentinfo","[" + options +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetTxOut(WebRequestPostExample httpInstance, string txid, int vout, Boolean includemempool)
+        {
+            string json = httpInstance.CreateJsonRequest("gettxout","[" + "\"" + txid + "\"" + "," + vout.ToString() + "," + includemempool.ToString().ToLower() +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetTxOutProof(WebRequestPostExample httpInstance, List<String> txid, string blockhash)
+        {
+            String tx_list = "[";
+            foreach(var address_individual in txid)
+                {
+                    tx_list = tx_list + "\"" + address_individual + "\"" + ",";
+                }
+            if(tx_list.Length > 1)
+                {
+                    tx_list = tx_list.Substring(0, (tx_list.Length - 1 ) );
+                }
+
+            tx_list =tx_list + "]";
+            string json;
+            if(blockhash!="")
+            {
+                json = httpInstance.CreateJsonRequest("gettxoutproof","[" +tx_list + "," + "\"" + blockhash.ToString() + "\"" +  "]" );
+            }
+            else
+            {
+                json = httpInstance.CreateJsonRequest("gettxoutproof","[" +tx_list + ","  + ""  +  "]" );
+            }
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetTxOutSetInfo(WebRequestPostExample httpInstance)
+        {
+            string json = httpInstance.CreateJsonRequest("gettxoutsetinfo","[" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string KvSearch(WebRequestPostExample httpInstance, string key)
+        {
+            string json = httpInstance.CreateJsonRequest("kvsearch","[" + "\"" + key + "\"" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string KvUpdate(WebRequestPostExample httpInstance, string key, string value, int days, string passphrase)
+        {
+            string json = httpInstance.CreateJsonRequest("kvupdate","[" + "\"" + key + "\"" + "," + "\"" + value + "\"" + "," + "\"" + days.ToString() + "\"" + "," + "\"" + passphrase + "\"" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string MinerIds(WebRequestPostExample httpInstance, int height)
+        {
+            string json = httpInstance.CreateJsonRequest("minerids","[" + "\"" + height.ToString() +  "\"" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Notaries(WebRequestPostExample httpInstance, int height, int timestamp)
+        {
+            string options;
+            if(height!=0 && timestamp!=0)
+                {
+                options =  "\"" + height.ToString() + "\"" + "," + "\"" + timestamp.ToString()+ "\"" ;
+                }
+            else if(height!=0)
+                {
+                    options = "(" + "\"" + height.ToString() + "\"" +"}";
+                }
+            else
+                {
+                    options = "(" + "\"" + timestamp.ToString()+ "\"" + "}";
+                }
+            string json = httpInstance.CreateJsonRequest("notaries","[" + options +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string VerifyChain(WebRequestPostExample httpInstance, int check_level, int num_blocks)
+        {
+            string json = httpInstance.CreateJsonRequest("verifychain","[" + check_level.ToString() + "," + num_blocks.ToString() +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string VerifyTxOutProof(WebRequestPostExample httpInstance, string proofstring)
+        {
+            string json = httpInstance.CreateJsonRequest("verifytxoutproof","[" + "\"" + proofstring + "\"" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
         }
         public string CallHttpRequest(string json_request_data)
         {
