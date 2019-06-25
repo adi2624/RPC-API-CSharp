@@ -54,7 +54,30 @@ namespace Blockchain
             Console.WriteLine(result);
             //Getting Error. The Wallet already contains private key for this address or script.
 
-            
+            Console.WriteLine("Testing GetAddressBalance");
+            string[] input = {"REeWNkTotZfZHoZWCJ3MSSFLstguxL2Ckw"};
+            result = httpInstance.GetAddressBalance(httpInstance, new List<string>(input));
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetAddressDeltas");
+            result = httpInstance.GetAddressDeltas(httpInstance, new List<string>(input), 0, 0, false);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetAddressMemPool");
+            result = httpInstance.GetAddressMemPool(httpInstance, new List<string>(input));
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetAddressTxIds");
+            result = httpInstance.GetAddressTxIds(httpInstance, new List<string>(input), 0, 0);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetAddressUTxos");
+            result = httpInstance.GetAddressUTuxos(httpInstance, new List<string>(input), false);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetSnapshot");
+            result = httpInstance.GetSnapshot(httpInstance, 0);
+            Console.WriteLine(result);
             
         }
 
@@ -136,6 +159,105 @@ namespace Blockchain
             string result = CallHttpRequest(json);
             return result;
         }
+
+        public string GetAddressBalance(WebRequestPostExample httpInstance, List<String> addresses)
+        {
+            String addr_list = "[";
+            foreach(var address_individual in addresses)
+                {
+                    addr_list = addr_list + "\"" + address_individual + "\"" + ",";
+                }
+            if(addr_list.Length > 1)
+                {
+                    addr_list = addr_list.Substring(0, (addr_list.Length - 1 ) );
+                }
+
+            addr_list = addr_list + "]";
+
+            string json = httpInstance.CreateJsonRequest("getaddressbalance","[{" + "\"addresses\":"  + addr_list + "}]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetAddressDeltas(WebRequestPostExample httpInstance, List<String> addresses, int start, int end, Boolean chaininfo)
+            {
+                String addr_list = "[";
+                foreach(var address_individual in addresses)
+                    {
+                        addr_list = addr_list + "\"" + address_individual + "\"" + ",";
+                    }
+                if(addr_list.Length > 1)
+                    {
+                        addr_list = addr_list.Substring(0, (addr_list.Length - 1 ) );
+                    }
+
+                addr_list = addr_list + "]";
+                string json = httpInstance.CreateJsonRequest("getaddressdeltas","[{" + "\"addresses\":"  + addr_list + "," + "\"start\":"  + start.ToString()  + "," + "\"end\":" +    end.ToString()  + "," + "\"chainInfo\":" + "\"" + chaininfo.ToString().ToLower() + "\"" + "}]" );
+                string result = CallHttpRequest(json);
+                return result;
+            }
+
+        public string GetAddressMemPool(WebRequestPostExample httpInstance, List<String> addresses)
+            {
+                String addr_list = "[";
+            foreach(var address_individual in addresses)
+                {
+                    addr_list = addr_list + "\"" + address_individual + "\"" + ",";
+                }
+            if(addr_list.Length > 1)
+                {
+                    addr_list = addr_list.Substring(0, (addr_list.Length - 1 ) );
+                }
+
+            addr_list = addr_list + "]";
+
+            string json = httpInstance.CreateJsonRequest("getaddressmempool","[{" + "\"addresses\":"  + addr_list + "}]" );
+            string result = CallHttpRequest(json);
+            return result;
+            }
+
+        public string GetAddressTxIds(WebRequestPostExample httpInstance, List<String> addresses, int start, int end)
+        {
+            String addr_list = "[";
+            foreach(var address_individual in addresses)
+                {
+                    addr_list = addr_list + "\"" + address_individual + "\"" + ",";
+                }
+            if(addr_list.Length > 1)
+                {
+                    addr_list = addr_list.Substring(0, (addr_list.Length - 1 ) );
+                }
+
+            addr_list = addr_list + "]";
+            string json = httpInstance.CreateJsonRequest("getaddresstxids","[{" + "\"addresses\":"  + addr_list + "," + "\"start\":"  + start.ToString()  + "," + "\"end\":" +    end.ToString()   + "}]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetAddressUTuxos(WebRequestPostExample httpInstance, List<String> addresses, Boolean chaininfo)
+        {
+            String addr_list = "[";
+                foreach(var address_individual in addresses)
+                    {
+                        addr_list = addr_list + "\"" + address_individual + "\"" + ",";
+                    }
+                if(addr_list.Length > 1)
+                    {
+                        addr_list = addr_list.Substring(0, (addr_list.Length - 1 ) );
+                    }
+
+                addr_list = addr_list + "]";
+                string json = httpInstance.CreateJsonRequest("getaddressutxos","[{" + "\"addresses\":"  + addr_list + "," + "\"chainInfo\":" + "\"" + chaininfo.ToString().ToLower() + "\"" + "}]" );
+                string result = CallHttpRequest(json);
+                return result;
+        }
+
+        public string GetSnapshot(WebRequestPostExample httpInstance, int top)
+        {
+            string json = httpInstance.CreateJsonRequest("getsnapshot","[" + "\"top.ToString()\"" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
         public string CallHttpRequest(string json_request_data)
         {
              var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:10607/");
@@ -161,9 +283,12 @@ namespace Blockchain
                     }
                 }
 
-                catch(Exception ex)
-                {
-                    Console.Write(ex.ToString());
+                catch(WebException ex)
+                {   
+                    
+                    var resp = new StreamReader(ex.Response.GetResponseStream()).ReadToEnd();
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(resp);
                 }
 
                 return null;
@@ -199,6 +324,7 @@ namespace Blockchain
             return parsed_request;
             
         }
+
         
     }
 
