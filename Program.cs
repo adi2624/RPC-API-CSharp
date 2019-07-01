@@ -210,6 +210,50 @@ namespace Blockchain
             Console.WriteLine("Testing SetGenerate");
             result = httpInstance.SetGenerate(httpInstance, false, 2);
             Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetBlockSubsidy");
+            result = httpInstance.GetBlockSubsidy(httpInstance,1);
+            Console.WriteLine(result);
+
+            string[] capabilities = {};
+            Console.WriteLine("Testing GetBlockTemplate");
+            result = httpInstance.GetBlockTemplate(httpInstance,"disablecb",new List<String>(capabilities), ""); //ERROR: "Cannot get a block template while no peers are connected or chain not in sync!"}
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetLocalSolps");
+            result = httpInstance.GetLocalSolps(httpInstance);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetMiningInfo");
+            result = httpInstance.GetMiningInfo(httpInstance);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetNetworkSlops");
+            result = httpInstance.GetNetworkSolps(httpInstance,120,-1);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing PrioritiSetTransaction");
+            result = httpInstance.PrioritiseTransaction(httpInstance,"ff2c4c0c0d55310c2f7e9105e2fdbdb1496049e1b7f193d7f69d7a5b662fc610",0.0,0);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing SubmitBlock");
+            result = httpInstance.SubmitBlock(httpInstance,"",""); //NEED HEX BLOCK ADDRESS TO CHECK.
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing AddNode");
+            result = httpInstance.AddNode(httpInstance, "127.0.0.1:10608","onetry");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing ClearBanned");
+            result = httpInstance.ClearBanned(httpInstance);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing DisconnectNode");
+            result = httpInstance.DisconnectNode(httpInstance,"127.0.0.1:10608");
+            Console.WriteLine(result);
+
+            
+
         }
 
         public string GetWalletInfo(WebRequestPostExample httpInstance)
@@ -695,6 +739,138 @@ BLOCKCHAIN COMMANDS
             return result;
         }
 
+        /*
+        JUMBLR COMMANDS
+         */
+
+        public string jumblr_deposit(WebRequestPostExample httpInstance, string deposit_address)
+        {
+            string json = httpInstance.CreateJsonRequest("jumblr_deposit","[" + "\"" + deposit_address + "\"" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string jumblr_pause(WebRequestPostExample httpInstance)
+        {
+            string json = httpInstance.CreateJsonRequest("jumblr_pause","[" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string jumblr_resume(WebRequestPostExample httpInstance)
+        {
+            string json = httpInstance.CreateJsonRequest("jumblr_resume","[" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string jumblr_secret(WebRequestPostExample httpInstance, DownloadStringCompletedEventArgs secret_address)
+        {
+            string json = httpInstance.CreateJsonRequest("jumblr_secret","[" + "\"" + secret_address + "\"" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        /*
+        MINING COMMANDS
+         */
+
+        public string GetBlockSubsidy(WebRequestPostExample httpInstance, int height)
+        {
+            string json;
+
+            if (height > 0)
+                {
+                    json = httpInstance.CreateJsonRequest("getblocksubsidy","[" +  height.ToString() + "]" );
+                    string result = CallHttpRequest(json);
+                    return result;
+                }
+            else
+                {
+                    json = httpInstance.CreateJsonRequest("getblocksubsidy","[" +  "]" );
+                    string result = CallHttpRequest(json);
+                    return result;
+                }
+        }
+
+        public string GetBlockTemplate(WebRequestPostExample httpInstance, string mode, List<String> capabilities, string support)
+        {
+             String cap_list = "[";
+                foreach(var cap_individual in capabilities)
+                    {
+                        cap_list = cap_list + "\"" + cap_individual + "\"" + ",";
+                    }
+                if(cap_list.Length > 1)
+                    {
+                        cap_list = cap_list.Substring(0, (cap_list.Length - 1 ) );
+                    }
+
+                cap_list = cap_list + "]";
+
+                    string json = httpInstance.CreateJsonRequest("getblocktemplate","[{"  + "\"" + "mode" + "\":" + (mode != "" ?"\"" + mode : "") + "\"" + ","  + "\"" + "capabilities" + "\":" + (cap_list.Length > 0 ? cap_list :"") + ","  + "\"" + "support" + "\":" + "\"" + (support != "" ? "\"" + support : "") + "\""  +  "}]" );
+                    string result = CallHttpRequest(json);
+                    return result;
+
+        }
+
+        public string GetLocalSolps(WebRequestPostExample httpInstance)
+        {
+            string json = httpInstance.CreateJsonRequest("getlocalsolps","[" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetMiningInfo(WebRequestPostExample httpInstance)
+        {
+            string json = httpInstance.CreateJsonRequest("getmininginfo","[" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetNetworkSolps(WebRequestPostExample httpInstance, int blocks, int height)
+        {
+            string json = httpInstance.CreateJsonRequest("getnetworksolps","[" + blocks.ToString() + "," + height.ToString() + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+        public string PrioritiseTransaction(WebRequestPostExample httpInstance, string txid, double priority_delta, int fee_delta)
+        {
+            string json = httpInstance.CreateJsonRequest("prioritisetransaction","[" + "\"" + txid + "\"" + "," + priority_delta.ToString()+ "," + fee_delta.ToString() +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }      
+
+        public string SubmitBlock(WebRequestPostExample httpInstance, string hexdata, string workid)
+        {
+            string json = httpInstance.CreateJsonRequest("submitblock","[" + "\"" + hexdata + "\"" + "," + "\"" + (workid!=""?workid:"") + "\"" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        /*
+        NETWORK COMMANDS
+         */
+        
+        public string AddNode(WebRequestPostExample httpInstance, string node, string command)
+        {
+            string json = httpInstance.CreateJsonRequest("addnode","[" + "\"" + node + "\"" + "," + "\"" + command + "\"" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string ClearBanned(WebRequestPostExample httpInstance)
+        {
+            string json = httpInstance.CreateJsonRequest("clearbanned","[" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string DisconnectNode(WebRequestPostExample httpInstance, string node)
+        {
+            string json = httpInstance.CreateJsonRequest("disconnectnode","[" + "\"" + node + "\"" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
         public string CallHttpRequest(string json_request_data)
         {
              var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:10607/");
