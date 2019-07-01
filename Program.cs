@@ -176,7 +176,40 @@ namespace Blockchain
             Console.WriteLine("Testing VerifyTxOutProof");
             result = httpInstance.VerifyTxOutProof(httpInstance,"null");    //ERROR: NEED HEX STRING TO CHECK.
             Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetInfo");
+            result = httpInstance.GetInfo(httpInstance);    //ERROR: NEED HEX STRING TO CHECK.
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Help");
+            result = httpInstance.Help(httpInstance,"getaddressbalance");
+            Console.WriteLine(result);
+
+            /*
+            Console.WriteLine("Testing Stop");
+            result = httpInstance.Stop(httpInstance);
+            Console.WriteLine(result);
+             */
+            Console.WriteLine("Testing Z_GetPaymentDisclosure");
+            result = httpInstance.Z_GetPaymentDisclosure(httpInstance,"ff2c4c0c0d55310c2f7e9105e2fdbdb1496049e1b7f193d7f69d7a5b662fc610","0", "0", "refund");   //No information available about transaction.
+            Console.WriteLine(result);
+
+            /*
+            Could not write a test for Z_VAlidatePaymentDisclosure
+             */            
             
+            Console.WriteLine("Testing Generate");
+            result = httpInstance.Generate(httpInstance,0);  //ERROR: CODE -32601 MESSAGE: MINInG ENABLED
+            Console.WriteLine(result);
+
+
+            Console.WriteLine("Testing GetGenerate");
+            result = httpInstance.GetGenerate(httpInstance);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing SetGenerate");
+            result = httpInstance.SetGenerate(httpInstance, false, 2);
+            Console.WriteLine(result);
         }
 
         public string GetWalletInfo(WebRequestPostExample httpInstance)
@@ -587,6 +620,81 @@ BLOCKCHAIN COMMANDS
             string result = CallHttpRequest(json);
             return result;
         }
+
+
+
+        /*
+        
+            CONTROL COMMANDS
+
+         */
+
+        
+        public string GetInfo(WebRequestPostExample httpInstance)
+        {
+            string json = httpInstance.CreateJsonRequest("getinfo","[" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Help(WebRequestPostExample httpInstance,string command)
+        {
+            string json = httpInstance.CreateJsonRequest("help","[" + "\"" + command + "\"" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Stop(WebRequestPostExample httpInstance)
+        {
+            string json = httpInstance.CreateJsonRequest("stop","[" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        /*
+        DISCLOSURE COMMANDS
+         */
+
+        public string Z_GetPaymentDisclosure(WebRequestPostExample httpInstance, string txid, string js_index, string output_index, string message)
+        {
+            string json = httpInstance.CreateJsonRequest("z_getpaymentdisclosure","[" + "\"" + txid + "\"" + "," + "\"" + js_index + "\"" + "," + "\"" + output_index + "\"" + "," + "\"" + message + "\"" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Z_ValidatePaymentDisclosure(WebRequestPostExample httpInstance, string payment_disclosure)
+        {
+            string json = httpInstance.CreateJsonRequest("z_validatepaymentdisclosure","[" + "\"" + payment_disclosure + "\"" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        /*
+        GENERATE COMMANDS
+         */
+
+        public string Generate(WebRequestPostExample httpInstance, int num_blocks)
+        {
+            string json = httpInstance.CreateJsonRequest("generate","[" + num_blocks.ToString() + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+        
+
+        public string GetGenerate(WebRequestPostExample httpInstance)
+        {
+            string json = httpInstance.CreateJsonRequest("getgenerate","[" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string SetGenerate(WebRequestPostExample httpInstance, Boolean generate, int genproclimit)
+        {
+            string json = httpInstance.CreateJsonRequest("setgenerate","[" + generate.ToString().ToLower() +  "," + genproclimit.ToString() + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
         public string CallHttpRequest(string json_request_data)
         {
              var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:10607/");
