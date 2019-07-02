@@ -499,9 +499,47 @@ namespace Blockchain
             result = httpInstance.SignRawTransaction(httpInstance,"010000000110c62f665b7a9df6d793f1b7e1496049b1bdfde205917e2f0c31550d0c4c2cff0000000000ffffffff0180841e00000000001976a9143ae0a346d42bc47a5217d8158169431efd12827c88ac00000000");
             Console.WriteLine(result);
 
-            
+            string[] keys = {"UtZS3VWNtACyVNsJa2GJaJ89xS7hvotn47WpiSYDE9SDD59xunzW"};
+            Console.WriteLine("Testing CreateMultiSig");
+            result = httpInstance.CreateMultiSig(httpInstance,1,new List<String>(keys)); 
+            Console.WriteLine(result);
 
- 
+            Console.WriteLine("Testing DecodeCCOpret");
+            result = httpInstance.DecodeCCopret(httpInstance,"010000000110c62f665b7a9df6d793f1b7e1496049b1bdfde205917e2f0c31550d0c4c2cff0000000000ffffffff0180841e00000000001976a9143ae0a346d42bc47a5217d8158169431efd12827c88ac00000000");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing EstimateFee");
+            result = httpInstance.EstimateFee(httpInstance,0);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing EstimatePriority");
+            result = httpInstance.EstimatePriority(httpInstance,0);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing InvalidateBlock");
+            result = httpInstance.InvalidateBlock(httpInstance,"027e3758c3a65b12aa1046462b486d0a63bfa1beae327897f56c5cfb7daaae71");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing ReconsiderBlock");
+            result = httpInstance.ReconsiderBlock(httpInstance,"027e3758c3a65b12aa1046462b486d0a63bfa1beae327897f56c5cfb7daaae71");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing TxNotarizedConfirmed");
+            result = httpInstance.TxNotarizeConfirmed(httpInstance, "ff2c4c0c0d55310c2f7e9105e2fdbdb1496049e1b7f193d7f69d7a5b662fc610");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing ValidateAddress");
+            result = httpInstance.ValidateAddress(httpInstance,"REeWNkTotZfZHoZWCJ3MSSFLstguxL2Ckw");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing VerifyMessage");
+            result = httpInstance.VerifyMessage(httpInstance,"REeWNkTotZfZHoZWCJ3MSSFLstguxL2Ckw","","");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Z_ValidateAddress");
+            result = httpInstance.Z_ValidateAddress(httpInstance,"REeWNkTotZfZHoZWCJ3MSSFLstguxL2Ckw");
+            Console.WriteLine(result);
+
         }
 
         /*
@@ -1653,6 +1691,95 @@ BLOCKCHAIN COMMANDS
             string result = CallHttpRequest(json);
             return result;
         }
+        
+        /*
+        UTIL COMMANDS
+         */
+
+        public string CreateMultiSig(WebRequestPostExample httpInstance, int number_required, List<String> keys)
+        {
+            String key_list = "[";
+                foreach(var key_individual in keys)
+                    {
+                        key_list = key_list + "\"" + key_individual + "\"" + ",";
+                    }
+                if(key_list.Length > 1)
+                    {
+                        key_list = key_list.Substring(0, (key_list.Length - 1 ) );
+                    }
+
+                key_list = key_list + "]";
+
+                    string json = httpInstance.CreateJsonRequest("createmultisig","[" + number_required.ToString() + "," + key_list + "]" );
+                    string result = CallHttpRequest(json);
+                    return result;
+        }
+
+        public string DecodeCCopret(WebRequestPostExample httpInstance,string script_pub_key)
+        {
+            string json = httpInstance.CreateJsonRequest("decodeccopret","[" + "\"" + script_pub_key + "\"" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string EstimateFee(WebRequestPostExample httpInstance, int num_blocks)
+        {
+            string json = httpInstance.CreateJsonRequest("estimatefee","["  + num_blocks.ToString()  +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string EstimatePriority(WebRequestPostExample httpInstance, int num_blocks)
+        {
+            string json = httpInstance.CreateJsonRequest("estimatepriority","["  + num_blocks.ToString()  +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string InvalidateBlock(WebRequestPostExample httpInstance, string block_hash)
+        {
+            string json = httpInstance.CreateJsonRequest("invalidateblock","["  +  "\"" + block_hash + "\"" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+         public string ReconsiderBlock(WebRequestPostExample httpInstance, string block_hash)
+        {
+            string json = httpInstance.CreateJsonRequest("reconsiderblock","["  +  "\"" + block_hash + "\"" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string TxNotarizeConfirmed(WebRequestPostExample httpInstance, string tx_id)
+        {
+            string json = httpInstance.CreateJsonRequest("txnotarizedconfirmed","["  +  "\"" + tx_id + "\"" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string ValidateAddress(WebRequestPostExample httpInstance, string address)
+        {
+            string json = httpInstance.CreateJsonRequest("validateaddress","["  +  "\"" + address + "\"" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string VerifyMessage(WebRequestPostExample httpInstance, string address, string signature, string message)
+        {
+            string json = httpInstance.CreateJsonRequest("verifymessage","["  +  "\"" + address + "\"" + "," + "\"" + signature + "\"" + "," + "\"" + message + "\"" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Z_ValidateAddress(WebRequestPostExample httpInstance, string address)
+        {
+            string json = httpInstance.CreateJsonRequest("z_validateaddress","["  +  "\"" + address + "\"" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+
+
         
 
 
