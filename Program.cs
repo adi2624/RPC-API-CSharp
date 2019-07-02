@@ -431,6 +431,46 @@ namespace Blockchain
             result = httpInstance.ZCBenchmark(httpInstance,"time",1);
             Console.WriteLine(result);
 
+            Console.WriteLine("Testing GetAddedNodeInfo");
+            result = httpInstance.GetAddedNodeInfo(httpInstance,false,"");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetConnectionCount");
+            result = httpInstance.GetConnectionCount(httpInstance);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetDeprecationInfo");
+            result = httpInstance.GetDeprecationInfo(httpInstance);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetNetTotals");
+            result = httpInstance.GetNetTotals(httpInstance);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetNetworkInfo");
+            result = httpInstance.GetNetworkInfo(httpInstance);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetPeerInfo");
+            result = httpInstance.GetPeerInfo(httpInstance);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing ListBanned");
+            result = httpInstance.ListBanned(httpInstance);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Ping");
+            result = httpInstance.Ping(httpInstance);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing SetBan");
+            result = httpInstance.SetBan(httpInstance,"127.0.0.1:10607","add",0,false);
+            Console.WriteLine(result);
+            
+            
+
+
+
 
 
 
@@ -1445,6 +1485,70 @@ BLOCKCHAIN COMMANDS
             string result = CallHttpRequest(json);
             return result;
         }
+
+        public string GetAddedNodeInfo(WebRequestPostExample httpInstance, Boolean dns, string node)
+        {
+            string json = httpInstance.CreateJsonRequest("getaddednodeinfo","[" + dns.ToString().ToLower() + "," + "\"" + node + "\"" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetConnectionCount(WebRequestPostExample httpInstance)
+        {
+            string json = httpInstance.CreateJsonRequest("getconnectioncount","[" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetDeprecationInfo(WebRequestPostExample httpInstance)
+        {
+            string json = httpInstance.CreateJsonRequest("getdeprecationinfo","[" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetNetTotals(WebRequestPostExample httpInstance)
+        {
+            string json = httpInstance.CreateJsonRequest("getnettotals","[" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetNetworkInfo(WebRequestPostExample httpInstance)
+        {
+            string json = httpInstance.CreateJsonRequest("getnetworkinfo","[" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetPeerInfo(WebRequestPostExample httpInstance)
+        {
+            string json = httpInstance.CreateJsonRequest("getpeerinfo","[" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string ListBanned(WebRequestPostExample httpInstance)
+        {
+            string json = httpInstance.CreateJsonRequest("listbanned","[" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Ping(WebRequestPostExample httpInstance)
+        {
+            string json = httpInstance.CreateJsonRequest("ping","[" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+        
+        public string SetBan(WebRequestPostExample httpInstance,string ip, string command, int bantime, Boolean absolute)
+        {
+            string json = httpInstance.CreateJsonRequest("setban","[" +"\"" + ip + "\"" + "," + "\"" + command + "\"" + "," + bantime.ToString() + "," + absolute.ToString().ToLower() +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
         public string CallHttpRequest(string json_request_data)
         {
              var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:10607/");
