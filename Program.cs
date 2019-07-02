@@ -240,9 +240,11 @@ namespace Blockchain
             result = httpInstance.SubmitBlock(httpInstance,"",""); //NEED HEX BLOCK ADDRESS TO CHECK.
             Console.WriteLine(result);
 
+            /* 
             Console.WriteLine("Testing AddNode");
             result = httpInstance.AddNode(httpInstance, "127.0.0.1:10608","onetry");
             Console.WriteLine(result);
+            */
 
             Console.WriteLine("Testing ClearBanned");
             result = httpInstance.ClearBanned(httpInstance);
@@ -252,10 +254,74 @@ namespace Blockchain
             result = httpInstance.DisconnectNode(httpInstance,"127.0.0.1:10608");
             Console.WriteLine(result);
 
-            
+            Console.WriteLine("Testing DumpPrivKey");
+            result = httpInstance.DumpPrivKey(httpInstance,"REeWNkTotZfZHoZWCJ3MSSFLstguxL2Ckw");
+            Console.WriteLine(result);
 
+            Console.WriteLine("Testing EncryptWallet");
+            result = httpInstance.EncryptWallet(httpInstance,"abc123");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetBalance");
+            result = httpInstance.GetBalance(httpInstance,"",1,false);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetNewAddress");
+            result = httpInstance.GetNewAddress(httpInstance,"");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing ImportPrivKey");
+            result = httpInstance.ImportPrivKey(httpInstance,"UtZS3VWNtACyVNsJa2GJaJ89xS7hvotn47WpiSYDE9SDD59xunzW","",true);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing ImportWallet");
+            result = httpInstance.ImportWallet(httpInstance,"");        //TEST INCOMPLETE
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing KeyPoolRefill");
+            result = httpInstance.KeyPoolRefill(httpInstance,100);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing ListAddressGroupings");
+            result = httpInstance.ListAddressGroupings(httpInstance);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing ListLockUnspent");
+            result = httpInstance.ListLockUnspent(httpInstance);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing ListReceivedByAddress");
+            result = httpInstance.ListReceivedByAddress(httpInstance,1,true,false);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing ListsinCeBlock");
+            result = httpInstance.ListsInCeBlock(httpInstance,"027e3758c3a65b12aa1046462b486d0a63bfa1beae327897f56c5cfb7daaae71",1,false);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing ListTransactions");
+            result = httpInstance.ListTransactions(httpInstance,"",10,0,false); 
+            Console.WriteLine(result);
+
+
+            string[] address_input = {""};
+            Console.WriteLine("Testing ListUnspent");
+            result = httpInstance.ListUnspent(httpInstance,1,9999999,new List<String>(address_input));
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing LockUnspent");
+            result = httpInstance.LockUnspent(httpInstance,false,"ff2c4c0c0d55310c2f7e9105e2fdbdb1496049e1b7f193d7f69d7a5b662fc610",0); 
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing ResendWalletTransactions");
+            result = httpInstance.ResendWalletTransactions(httpInstance);
+            Console.WriteLine(result);
         }
 
+        /*
+        WALLET COMMANDS
+         */
+
+        
         public string GetWalletInfo(WebRequestPostExample httpInstance)
             {
                 
@@ -275,6 +341,12 @@ namespace Blockchain
             return result;
         }
 
+        public string DumpPrivKey(WebRequestPostExample httpInstance, string address)
+        {
+            string json_request_data = httpInstance.CreateJsonRequest("dumpprivkey", "[" + "\"" +address + "\"" + "]" );
+            string result = CallHttpRequest(json_request_data);
+            return result;
+        }
         public string DumpWallet(WebRequestPostExample httpInstance,string filename)
             {
                 //string json_request_data = "{\"jsonrpc\": \"1.0\", \"id\":\"curltest\", \"method\": \"dumpwallet\", \"params\": [\"" + filename + "\"] }";
@@ -283,7 +355,13 @@ namespace Blockchain
                 return result;
 
             }
-
+        
+        public string EncryptWallet(WebRequestPostExample httpInstance, string passphrase)
+        {
+            string json_request_data = httpInstance.CreateJsonRequest("encryptwallet", "["  + "\"" + passphrase  + "\"" + "]" );
+            string result = CallHttpRequest(json_request_data);
+            return result;
+        }
         public string GetAccount(WebRequestPostExample httpInstance, string address)
         {
            
@@ -293,6 +371,19 @@ namespace Blockchain
             return result;
         }
 
+        public string GetBalance(WebRequestPostExample httpInstance, string account, int minconf, Boolean includeWatchOnly)
+        {
+            string json_request_data = httpInstance.CreateJsonRequest("getbalance", "[" + "\""  + "\"" + "," + minconf.ToString() + "]" );
+            string result = CallHttpRequest(json_request_data);
+            return result;
+        }
+
+        public string GetNewAddress(WebRequestPostExample httpInstance, string account)
+        {
+            string json_request_data = httpInstance.CreateJsonRequest("getnewaddress", "[" +  "]" );
+            string result = CallHttpRequest(json_request_data);
+            return result;
+        }
         public string DumpPrivateKey(WebRequestPostExample httpInstance, string address)
         {
             string json_request_data = httpInstance.CreateJsonRequest("dumpprivkey", "[" + "\"" + address + "\"" + "]"  );
@@ -335,6 +426,96 @@ namespace Blockchain
             return result;
         }
 
+        public string ImportPrivKey(WebRequestPostExample httpInstance, string priv_key, string label, Boolean rescan)
+        {
+            string json = httpInstance.CreateJsonRequest("importprivkey", "[" +  "\""+ priv_key + "\"" + ","  +  "\"" +  label +  "\""  + ","  + rescan.ToString().ToLower()  + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string ImportWallet(WebRequestPostExample httpInstance, string path)
+        {
+            string json_request_data = httpInstance.CreateJsonRequest("importwallet", "[" + "\"" + path + "\"" + "]"  );
+            string result = CallHttpRequest(json_request_data);
+            return result;
+        }
+
+        public string KeyPoolRefill(WebRequestPostExample httpInstance, int newsize)
+        {
+            string json_request_data = httpInstance.CreateJsonRequest("keypoolrefill", "["  + newsize.ToString() + "]"  );
+            string result = CallHttpRequest(json_request_data);
+            return result;
+        }
+
+        public string ListAddressGroupings(WebRequestPostExample httpInstance)
+        {
+            string json_request_data = httpInstance.CreateJsonRequest("listaddressgroupings", "["  + "]"  );
+            string result = CallHttpRequest(json_request_data);
+            return result;
+        }
+
+        public string ListLockUnspent(WebRequestPostExample httpInstance)
+        {
+            string json_request_data = httpInstance.CreateJsonRequest("listlockunspent", "["  + "]"  );
+            string result = CallHttpRequest(json_request_data);
+            return result;
+        }
+
+        public string ListReceivedByAddress(WebRequestPostExample httpInstance,int minconf,Boolean includeEmpty, Boolean includeWatchOnly)
+        {
+            string json_request_data = httpInstance.CreateJsonRequest("listreceivedbyaddress", "["  + minconf.ToString() + "," + includeEmpty.ToString().ToLower() + "," + includeWatchOnly.ToString().ToLower() + "]"  );
+            string result = CallHttpRequest(json_request_data);
+            return result;
+        }
+
+        public string ListsInCeBlock(WebRequestPostExample httpInstance, string blockhash, int targetconf, Boolean includeWatchOnly)
+        {
+            string json_request_data = httpInstance.CreateJsonRequest("listsinceblock", "["  + "\"" + blockhash + "\""  + "," + targetconf.ToString() + "," + includeWatchOnly.ToString().ToLower() + "]"  );
+            string result = CallHttpRequest(json_request_data);
+            return result;
+        }
+
+        public string ListTransactions(WebRequestPostExample httpInstance,string account, int count, int skip, Boolean includeWatchOnly)
+        {
+            string json_request_data = httpInstance.CreateJsonRequest("listtransactions", "["  + "\"" + "*" + "\""  + "," + count.ToString() + "," + skip.ToString() + "," + includeWatchOnly.ToString().ToLower() + "]"  );
+            string result = CallHttpRequest(json_request_data);
+            return result;
+        }
+
+        public string ListUnspent(WebRequestPostExample httpInstance,int minconf,int maxconf,List<String> addresses)
+        {
+            String addr_list = "[";
+            foreach(var address_individual in addresses)
+                {
+                    addr_list = addr_list + "\"" + address_individual + "\"" + ",";
+                }
+            if(addr_list.Length > 1)
+                {
+                    addr_list = addr_list.Substring(0, (addr_list.Length - 1 ) );
+                }
+
+            addr_list = addr_list + "]";
+
+            string json = httpInstance.CreateJsonRequest("listunspent","[" +  minconf.ToString() + ","  + maxconf.ToString() + "," + addr_list + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string LockUnspent(WebRequestPostExample httpInstance, Boolean unlock, string txid, int vout)
+        {
+            string json = httpInstance.CreateJsonRequest("lockunspent","["  + unlock.ToString().ToLower() + "," + "[{" + "\"txid\":"  + "\"" + txid  + "\""  + "," + "\"vout"  + "\"" +  ":" + vout  + "}]]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string ResendWalletTransactions(WebRequestPostExample httpInstance)
+        {
+            string json_request_data = httpInstance.CreateJsonRequest("resendwallettransactions", "["  + "]"  );
+            string result = CallHttpRequest(json_request_data);
+            return result;
+        }
+
+        public string SendMany(WebRequestPostExample httpInstance, )
 /*
 
 ADDRESS COMMANDS
