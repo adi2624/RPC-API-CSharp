@@ -315,6 +315,127 @@ namespace Blockchain
             Console.WriteLine("Testing ResendWalletTransactions");
             result = httpInstance.ResendWalletTransactions(httpInstance);
             Console.WriteLine(result);
+
+            Dictionary<String,Double> dictionary_to_send = new Dictionary<String,Double>();
+            string[] test_send_many_list = {""};
+            dictionary_to_send.Add("REeWNkTotZfZHoZWCJ3MSSFLstguxL2Ckw",0.02);
+            Console.WriteLine("Testing SendMany");
+            result = httpInstance.SendMany(httpInstance,dictionary_to_send,1,"",new List<String>(test_send_many_list));
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing SendToAddress");
+            result = httpInstance.SendToAddress(httpInstance,"REeWNkTotZfZHoZWCJ3MSSFLstguxL2Ckw",0.02,"hello","hi",true);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing SetPubKey");
+            result = httpInstance.SetPubKey(httpInstance,"0260801166cebdc9be1e3460ba9e4959fb29feee7725f565ffc296fa4636aa706f");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing SetTxFee");
+            result = httpInstance.SetTxFee(httpInstance,0.05);
+            Console.WriteLine(result);
+            
+            Console.WriteLine("Testing SignMessage");
+            result = httpInstance.SignMessage(httpInstance, "REeWNkTotZfZHoZWCJ3MSSFLstguxL2Ckw", "signed");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing WalletLock");
+            result = httpInstance.WalletLock(httpInstance);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing WalletTestPhrase");
+            result = httpInstance.WalletPassphrase(httpInstance,"abc123",0);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing WalletPassphraseChange");
+            result = httpInstance.WalletPassphraseChange(httpInstance,"abc123","abc124");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Z_ExportKey");
+            result = httpInstance.Z_ExportKey(httpInstance, "zs1jmqt4tc4mn7vy2ql6qmwnf4k3u0jjkkdg4s5nawju8jcpfags4ryf2j0ds8jrmdknpsujq40hm5"); //TEST FAILED.
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Z_ExportViewingKey");
+            result = httpInstance.Z_ExportViewingKey(httpInstance, "zs1jmqt4tc4mn7vy2ql6qmwnf4k3u0jjkkdg4s5nawju8jcpfags4ryf2j0ds8jrmdknpsujq40hm5"); //TEST FAILED.
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Z_export_wallet");
+            result = httpInstance.Z_ExportWallet(httpInstance, "zwalletexport");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Z_GetBalance");
+            result = httpInstance.Z_GetBalance(httpInstance, "REeWNkTotZfZHoZWCJ3MSSFLstguxL2Ckw", 1);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Z_GetNewAddress");
+            result = httpInstance.Z_GetNewAddress(httpInstance);
+            Console.WriteLine(result);
+
+            String contents = "["  + "opid-6a9da0dd-a950-4d95-848c-d3c18e44be03"  + "]";
+            String[] contents_list = {contents};
+            List<String> new_list = new List<String>(contents_list);
+            Console.WriteLine("Testing GetOperationResult");
+            result = httpInstance.Z_GetOperationResult(httpInstance,new_list);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetOperationStatus");
+            result = httpInstance.Z_GetOperationStatus(httpInstance,new_list);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Z_GetTotalBalance");
+            result = httpInstance.Z_GetTotalBalance(httpInstance,1,false);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Z_ImportKey");
+            result = httpInstance.Z_ImportKey(httpInstance,"Hwhf3O7QqwbPXhZcY+b8xWLBy0Im3CDDm+oVTZVaIi8oczkloc9VvEOh3rKXyb+34fju2KgUrhzdjxLWXMLlSAo=","whenkeyisnew",0);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Z_ImportViewingKey");
+            result = httpInstance.Z_ImportViewingKey(httpInstance,"Hwhf3O7QqwbPXhZcY+b8xWLBy0Im3CDDm+oVTZVaIi8oczkloc9VvEOh3rKXyb+34fju2KgUrhzdjxLWXMLlSAo=","whenkeyisnew",0);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Z_ImportWallet");
+            result = httpInstance.Z_ImportWallet(httpInstance,"/Users/adityarajguru/komodo/src/./zwalletexport");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Z_ListAddresses");
+            result = httpInstance.Z_ListAddresses(httpInstance,false);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Z_ListOperationIDs");
+            result = httpInstance.Z_ListOperationIds(httpInstance,"success");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Z_ListReceivedByAddress");
+            result = httpInstance.Z_ListReceivedByAddress(httpInstance, "zs1jmqt4tc4mn7vy2ql6qmwnf4k3u0jjkkdg4s5nawju8jcpfags4ryf2j0ds8jrmdknpsujq40hm5", 1);
+            Console.WriteLine(result);
+
+            string[] address_input_z = {"zs1jmqt4tc4mn7vy2ql6qmwnf4k3u0jjkkdg4s5nawju8jcpfags4ryf2j0ds8jrmdknpsujq40hm5"};
+            Console.WriteLine("Testing Z_ListUnspent");
+            result = httpInstance.Z_ListUnspent(httpInstance,1,9999999,false,new List<String>(address_input_z));
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Z_MergeToAddress");
+            result = httpInstance.Z_MergeToAddress(httpInstance,new List<String>(address_input_z),"zs1jmqt4tc4mn7vy2ql6qmwnf4k3u0jjkkdg4s5nawju8jcpfags4ryf2j0ds8jrmdknpsujq40hm5",0.0002,0,0,"");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Z_SendMany");
+            result = httpInstance.Z_SendMany(httpInstance, "zs1jmqt4tc4mn7vy2ql6qmwnf4k3u0jjkkdg4s5nawju8jcpfags4ryf2j0ds8jrmdknpsujq40hm5",dictionary_to_send,"",1,0.02); //ERROR
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Z_ShieldCoinBase");
+            result = httpInstance.Z_ShieldCoinBase(httpInstance,"zs1jmqt4tc4mn7vy2ql6qmwnf4k3u0jjkkdg4s5nawju8jcpfags4ryf2j0ds8jrmdknpsujq40hm5","zs1jmqt4tc4mn7vy2ql6qmwnf4k3u0jjkkdg4s5nawju8jcpfags4ryf2j0ds8jrmdknpsujq40hm5",0.01,5);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing ZCBenchmark");
+            result = httpInstance.ZCBenchmark(httpInstance,"time",1);
+            Console.WriteLine(result);
+
+
+
+
+            
+
         }
 
         /*
@@ -515,7 +636,279 @@ namespace Blockchain
             return result;
         }
 
-        public string SendMany(WebRequestPostExample httpInstance, )
+        public string SendMany(WebRequestPostExample httpInstance, Dictionary<String,Double> amounts, int minconf, string comment, List<String> subtract_fee)
+        {
+            string amount_list = "{";
+            foreach(var amount_individual in amounts)
+                {
+                    amount_list = amount_list + "\"" + amount_individual.Key + "\"" + ":" + amount_individual.Value + ",";
+                }
+            if(amount_list.Length > 1)
+                {
+                    amount_list = amount_list.Substring(0, (amount_list.Length - 1 ) );
+                }
+
+            amount_list = amount_list + "}";
+
+            string subtract_list = "[";
+            foreach(var fee_individual in subtract_fee)
+            {
+                subtract_list = subtract_list + "\"" + fee_individual + "\"" + ",";
+            }
+            
+            if(subtract_list.Length > 1)
+                {
+                    subtract_list = subtract_list.Substring(0, (subtract_list.Length - 1 ) );
+                }
+
+            subtract_list = subtract_list + "]";
+
+            string json = httpInstance.CreateJsonRequest("sendmany","[" +  "\"" + "\"" + ","  + amount_list + "," + minconf.ToString() +"," + "\"" + comment.ToString() + "\"" + "," + subtract_list + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string SendToAddress(WebRequestPostExample httpInstance, string address, Double amount, string comment, string comment_to, Boolean subtract_amount_from_fee)
+        {
+            string json = httpInstance.CreateJsonRequest("sendtoaddress","[" +  "\"" + address + "\"" + "," + amount.ToString() +"," + "\"" + comment + "\"" + "," + "\"" + comment_to + "\"" + "," + subtract_amount_from_fee.ToString().ToLower() + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string SetPubKey(WebRequestPostExample httpInstance, string pubkey)
+        {
+            string json = httpInstance.CreateJsonRequest("setpubkey","[" + "\"" +  pubkey + "\"" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string SetTxFee(WebRequestPostExample httpInstance,Double amount)
+        {
+            string json = httpInstance.CreateJsonRequest("settxfee","["  +  amount.ToString() +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string SignMessage(WebRequestPostExample httpInstance, string address, string message)
+        {
+            string json = httpInstance.CreateJsonRequest("signmessage","[" + "\"" +  address+ "\"" + "," + "\"" + message + "\"" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string WalletLock(WebRequestPostExample httpInstance)
+        {
+            string json = httpInstance.CreateJsonRequest("walletlock","[" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string WalletPassphrase(WebRequestPostExample httpInstance, string passphrase, int timeout)
+        {
+            string json = httpInstance.CreateJsonRequest("walletpassphrase","[" + "\"" +  passphrase + "\"" + "," + timeout.ToString() + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string WalletPassphraseChange(WebRequestPostExample httpInstance, string oldpassphrase, string newpassphrase)
+        {
+            string json = httpInstance.CreateJsonRequest("walletpassphrasechange","[" + "\"" +  oldpassphrase + "\"" + "," + "\"" + newpassphrase + "\"" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Z_ExportKey(WebRequestPostExample httpInstance, string z_address)
+        {
+            string json = httpInstance.CreateJsonRequest("z_exportkey","[" + "\"" +  z_address + "\"" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Z_ExportViewingKey(WebRequestPostExample httpInstance, string z_address)
+        {
+            string json = httpInstance.CreateJsonRequest("z_exportviewingkey","[" + "\"" +  z_address + "\"" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Z_ExportWallet(WebRequestPostExample httpInstance,string filename)
+        {
+            string json = httpInstance.CreateJsonRequest("z_exportwallet","[" + "\"" +  filename + "\"" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Z_GetBalance(WebRequestPostExample httpInstance, string address, int minconf)
+        {
+            string json = httpInstance.CreateJsonRequest("z_getbalance","[" + "\"" +  address + "\"" + "," + minconf.ToString() +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Z_GetNewAddress(WebRequestPostExample httpInstance)
+        {
+            string json = httpInstance.CreateJsonRequest("z_getnewaddress","[" +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Z_GetOperationResult(WebRequestPostExample httpInstance, List<String> operation_id)
+        {
+            String op_list = "[";
+            foreach(var op_individual in operation_id)
+                {
+                    op_list = op_list + "\"" + op_individual + "\"" + ",";
+                }
+            if(op_list.Length > 1)
+                {
+                    op_list = op_list.Substring(0, (op_list.Length - 1 ) );
+                }
+
+            op_list = op_list + "]";
+
+            string json = httpInstance.CreateJsonRequest("z_getoperationresult","[" + op_list +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Z_GetOperationStatus(WebRequestPostExample httpInstance, List<String> operation_id)
+        {
+             String op_list = "[";
+            foreach(var op_individual in operation_id)
+                {
+                    op_list = op_list + "\"" + op_individual + "\"" + ",";
+                }
+            if(op_list.Length > 1)
+                {
+                    op_list = op_list.Substring(0, (op_list.Length - 1 ) );
+                }
+
+            op_list = op_list + "]";
+
+            string json = httpInstance.CreateJsonRequest("z_getoperationstatus","[" + op_list +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Z_GetTotalBalance(WebRequestPostExample httpInstance, int minconf, Boolean includeWatchOnly)
+        {
+            string json = httpInstance.CreateJsonRequest("z_gettotalbalance","[" + minconf.ToString() + "," + includeWatchOnly.ToString().ToLower() +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Z_ImportKey(WebRequestPostExample httpInstance, string z_privatekey, string rescan, int startheight)
+        {
+            string json = httpInstance.CreateJsonRequest("z_importkey","[" + "\"" + z_privatekey + "\"" + "," + "\"" + rescan + "\"" + "," + startheight.ToString() +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Z_ImportViewingKey(WebRequestPostExample httpInstance,string viewing_key, string rescan, int startheight)
+        {
+            string json = httpInstance.CreateJsonRequest("z_importviewingkey","[" + "\"" + viewing_key + "\"" + "," + "\"" + rescan + "\"" + "," + startheight.ToString() +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Z_ImportWallet(WebRequestPostExample httpInstance, string filename)
+        {
+            string json = httpInstance.CreateJsonRequest("z_importwallet","[" + "\"" + filename + "\"" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Z_ListAddresses(WebRequestPostExample httpInstance,Boolean includeWatchOnly)
+        {
+            string json = httpInstance.CreateJsonRequest("z_listaddresses","[" + includeWatchOnly.ToString().ToLower() + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Z_ListOperationIds(WebRequestPostExample httpInstance,string status)
+        {
+            string json = httpInstance.CreateJsonRequest("z_listoperationids","[" + "\"" + status + "\"" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Z_ListReceivedByAddress(WebRequestPostExample httpInstance, string address, int minconf)
+        {
+            string json = httpInstance.CreateJsonRequest("z_listreceivedbyaddress","[" + "\"" + address + "\"" + "," + minconf.ToString()  + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Z_ListUnspent(WebRequestPostExample httpInstance, int minconf, int maxconf, Boolean includeWatchOnly, List<String> addresses)
+        {
+            String addr_list = "[";
+            foreach(var address_individual in addresses)
+                {
+                    addr_list = addr_list + "\"" + address_individual + "\"" + ",";
+                }
+            if(addr_list.Length > 1)
+                {
+                    addr_list = addr_list.Substring(0, (addr_list.Length - 1 ) );
+                }
+
+            addr_list = addr_list + "]";
+
+            string json = httpInstance.CreateJsonRequest("z_listunspent","[" +  minconf.ToString() + ","  + maxconf.ToString() + "," + includeWatchOnly.ToString().ToLower() + "," + addr_list + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Z_MergeToAddress(WebRequestPostExample httpInstance, List<String> from_addresses, string to_address, Double fee, int transparent_limit, int shielded_limit, string memo)
+        {
+            String addr_list = "[";
+            foreach(var address_individual in from_addresses)
+                {
+                    addr_list = addr_list + "\"" + address_individual + "\"" + ",";
+                }
+            if(addr_list.Length > 1)
+                {
+                    addr_list = addr_list.Substring(0, (addr_list.Length - 1 ) );
+                }
+
+            addr_list = addr_list + "]";
+
+            string json = httpInstance.CreateJsonRequest("z_mergetoaddress","[" + addr_list + "," + "\"" + to_address + "\"" + "," + (fee!=0.0001?fee.ToString():"\""+"\"") + "," + (transparent_limit!=50?transparent_limit.ToString():"\""+"\"") + "," + (shielded_limit!=10?shielded_limit.ToString():"\""+"\"") + (memo!=""?memo:"\""+"\"") + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Z_SendMany(WebRequestPostExample httpInstance,string fromaddress,Dictionary<String,Double> amounts, string memo, int minconf, Double fee)
+        {
+            string amount_list = "{";
+            foreach(var amount_individual in amounts)
+                {
+                    amount_list = amount_list + "\"" + amount_individual.Key + "\"" + ":" + amount_individual.Value + ",";
+                }
+            if(amount_list.Length > 1)
+                {
+                    amount_list = amount_list.Substring(0, (amount_list.Length - 1 ) );
+                }
+
+            amount_list = amount_list + "}";
+
+            string json = httpInstance.CreateJsonRequest("z_sendmany","[" + "\"" + fromaddress + "\"" + "," + amount_list + "," + (memo!=""?memo:"\""+"\"") + "," + (minconf!=1?minconf.ToString():"\""+"\"") + "," + (fee!=0.0001?fee.ToString():"\""+"\"") + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string Z_ShieldCoinBase(WebRequestPostExample httpInstance, string fromaddress, string to_address, double fee, int limit)
+        {
+            string json = httpInstance.CreateJsonRequest("z_shieldcoinbase","[" + "\"" + fromaddress + "\"" + "," + "\"" + to_address  +  "\"" + "," + (fee!=0.0001?fee.ToString():"\"" + "\"") + "," + (limit!=50?limit.ToString():"\"" + "\"")+ "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string ZCBenchmark(WebRequestPostExample httpInstance, string benchmark_type, int samplecount)
+        {
+            string json = httpInstance.CreateJsonRequest("zcbenchmark","[" + "\"" + benchmark_type + "\"" + "," + samplecount.ToString() +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
 /*
 
 ADDRESS COMMANDS
