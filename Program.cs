@@ -466,16 +466,42 @@ namespace Blockchain
             Console.WriteLine("Testing SetBan");
             result = httpInstance.SetBan(httpInstance,"127.0.0.1:10607","add",0,false);
             Console.WriteLine(result);
+
+            Dictionary<String,Double> test1 = new Dictionary<String,Double>();
+            test1.Add("ff2c4c0c0d55310c2f7e9105e2fdbdb1496049e1b7f193d7f69d7a5b662fc610",0);
+            Dictionary<String,Double> test2 = new Dictionary<String,Double>();
+            test2.Add("REeWNkTotZfZHoZWCJ3MSSFLstguxL2Ckw",0.02);
+            Console.WriteLine("Testing CreateRawTransaction");
+            result = httpInstance.CreateRawTransaction(httpInstance,test1,test2);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Decode Raw Transaction");
+            result = httpInstance.DecodeRawTransaction(httpInstance,"010000000110c62f665b7a9df6d793f1b7e1496049b1bdfde205917e2f0c31550d0c4c2cff0000000000ffffffff0180841e00000000001976a9143ae0a346d42bc47a5217d8158169431efd12827c88ac00000000");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Decode Script");
+            result = httpInstance.DecodeScript(httpInstance,"010000000110c62f665b7a9df6d793f1b7e1496049b1bdfde205917e2f0c31550d0c4c2cff0000000000ffffffff0180841e00000000001976a9143ae0a346d42bc47a5217d8158169431efd12827c88ac00000000");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Fund Raw Transaction");
+            result = httpInstance.FundRawTransaction(httpInstance,"010000000110c62f665b7a9df6d793f1b7e1496049b1bdfde205917e2f0c31550d0c4c2cff0000000000ffffffff0180841e00000000001976a9143ae0a346d42bc47a5217d8158169431efd12827c88ac00000000");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetRawTransaction");
+            result = httpInstance.GetRawTransaction(httpInstance,"ff2c4c0c0d55310c2f7e9105e2fdbdb1496049e1b7f193d7f69d7a5b662fc610",0);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Send Raw Transaction");
+            result = httpInstance.SendRawTransaction(httpInstance,"010000000110c62f665b7a9df6d793f1b7e1496049b1bdfde205917e2f0c31550d0c4c2cff0000000000ffffffff0180841e00000000001976a9143ae0a346d42bc47a5217d8158169431efd12827c88ac00000000",false);  //ERROR: {"code":-26,"message":"16: bad-txns-inputs-missing"},"id":"curltest"}
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Sign Raw Transaction");
+            result = httpInstance.SignRawTransaction(httpInstance,"010000000110c62f665b7a9df6d793f1b7e1496049b1bdfde205917e2f0c31550d0c4c2cff0000000000ffffffff0180841e00000000001976a9143ae0a346d42bc47a5217d8158169431efd12827c88ac00000000");
+            Console.WriteLine(result);
+
             
-            
 
-
-
-
-
-
-            
-
+ 
         }
 
         /*
@@ -1548,6 +1574,87 @@ BLOCKCHAIN COMMANDS
             string result = CallHttpRequest(json);
             return result;
         }
+
+        /*
+        RAW TRANSACTION COMMANDS
+         */
+
+        public string CreateRawTransaction(WebRequestPostExample httpInstance, Dictionary<String,Double> transactions, Dictionary<String,Double> amounts)
+        {
+            string tx_list = "[";
+            foreach(var transaction in transactions)
+            {
+                tx_list = tx_list + "{" + "\"txid" + "\"" + ":" + "\"" + transaction.Key + "\"" + "," + "\"" + "vout\"" + ":" + transaction.Value.ToString() + "}]";
+            }
+            if(tx_list.Length > 1)
+                {
+                    tx_list = tx_list.Substring(0, (tx_list.Length - 1 ) );
+                }
+
+            tx_list = tx_list + "]";
+
+            string amount_list = "{";
+            foreach(var amount_individual in amounts)
+                {
+                    amount_list = amount_list + "\"" + amount_individual.Key + "\"" + ":" + amount_individual.Value + ",";
+                }
+            if(amount_list.Length > 1)
+                {
+                    amount_list = amount_list.Substring(0, (amount_list.Length - 1 ) );
+                }
+
+            amount_list = amount_list + "}";
+            
+            string json = httpInstance.CreateJsonRequest("createrawtransaction","[" + tx_list + "," + amount_list +  "]" );
+            string result = CallHttpRequest(json);
+            return result;
+
+
+        }
+
+        public string DecodeRawTransaction(WebRequestPostExample httpInstance, string hexstring)
+        {
+            string json = httpInstance.CreateJsonRequest("decoderawtransaction","[" + "\"" + hexstring + "\"" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string DecodeScript(WebRequestPostExample httpInstance, string hexstring)
+        {
+            string json = httpInstance.CreateJsonRequest("decodescript","[" + "\"" + hexstring + "\"" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string FundRawTransaction(WebRequestPostExample httpInstance, string hexstring)
+        {
+            string json = httpInstance.CreateJsonRequest("fundrawtransaction","[" + "\"" + hexstring + "\"" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string GetRawTransaction(WebRequestPostExample httpInstance, string txid, int verbose)
+        {
+            string json = httpInstance.CreateJsonRequest("getrawtransaction","[" + "\"" + txid + "\"" + "," + verbose.ToString()  + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+        public string SendRawTransaction(WebRequestPostExample httpInstance, string hexstring, Boolean allow_high_fees)
+        {
+            string json = httpInstance.CreateJsonRequest("sendrawtransaction","[" + "\"" + hexstring + "\"" + "," + allow_high_fees.ToString().ToLower() + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+
+         public string SignRawTransaction(WebRequestPostExample httpInstance, string hexstring)
+        {
+            string json = httpInstance.CreateJsonRequest("signrawtransaction","[" + "\"" + hexstring + "\"" + "]" );
+            string result = CallHttpRequest(json);
+            return result;
+        }
+        
+
 
         public string CallHttpRequest(string json_request_data)
         {
