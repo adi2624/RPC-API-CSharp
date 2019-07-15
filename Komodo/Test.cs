@@ -5,6 +5,9 @@ namespace Blockchain
 {
     public partial class WebRequestPostExample
     {
+         //APPROPRIATE LOGIN INFORMATION NEEDS TO BE ENTERED HERE BY THE USER.
+        string username = "user2027525480";
+        string password =  "pass8bd57d606607e3978406658840c66a1db7b44d24c75991c122589863eaf3893569";
         public static void Test()
         {
              
@@ -177,21 +180,12 @@ namespace Blockchain
             result = httpInstance.Help(httpInstance,"getaddressbalance");
             Console.WriteLine(result);
 
-            /*
-            Console.WriteLine("Testing Stop");
-            result = httpInstance.Stop(httpInstance);
-            Console.WriteLine(result);
-             */
             Console.WriteLine("Testing Z_GetPaymentDisclosure");
             result = httpInstance.Z_GetPaymentDisclosure(httpInstance,"ff2c4c0c0d55310c2f7e9105e2fdbdb1496049e1b7f193d7f69d7a5b662fc610","0", "0", "refund");   //No information available about transaction.
             Console.WriteLine(result);
 
-            /*
-            Could not write a test for Z_VAlidatePaymentDisclosure
-             */            
-            
             Console.WriteLine("Testing Generate");
-            result = httpInstance.Generate(httpInstance,0);  //ERROR: CODE -32601 MESSAGE: MINInG ENABLED
+            result = httpInstance.Generate(httpInstance,0);  
             Console.WriteLine(result);
 
 
@@ -209,7 +203,7 @@ namespace Blockchain
 
             string[] capabilities = {};
             Console.WriteLine("Testing GetBlockTemplate");
-            result = httpInstance.GetBlockTemplate(httpInstance,"disablecb",new List<String>(capabilities), ""); //ERROR: "Cannot get a block template while no peers are connected or chain not in sync!"}
+            result = httpInstance.GetBlockTemplate(httpInstance,"disablecb",new List<String>(capabilities), ""); 
             Console.WriteLine(result);
 
             Console.WriteLine("Testing GetLocalSolps");
@@ -231,12 +225,6 @@ namespace Blockchain
             Console.WriteLine("Testing SubmitBlock");
             result = httpInstance.SubmitBlock(httpInstance,"",""); //NEED HEX BLOCK ADDRESS TO CHECK.
             Console.WriteLine(result);
-
-            /* 
-            Console.WriteLine("Testing AddNode");
-            result = httpInstance.AddNode(httpInstance, "127.0.0.1:10608","onetry");
-            Console.WriteLine(result);
-            */
 
             Console.WriteLine("Testing ClearBanned");
             result = httpInstance.ClearBanned(httpInstance);
@@ -267,7 +255,7 @@ namespace Blockchain
             Console.WriteLine(result);
 
             Console.WriteLine("Testing ImportWallet");
-            result = httpInstance.ImportWallet(httpInstance,"");        //TEST INCOMPLETE
+            result = httpInstance.ImportWallet(httpInstance,"");   
             Console.WriteLine(result);
 
             Console.WriteLine("Testing KeyPoolRefill");
@@ -344,11 +332,11 @@ namespace Blockchain
             Console.WriteLine(result);
 
             Console.WriteLine("Testing Z_ExportKey");
-            result = httpInstance.Z_ExportKey(httpInstance, "zs1jmqt4tc4mn7vy2ql6qmwnf4k3u0jjkkdg4s5nawju8jcpfags4ryf2j0ds8jrmdknpsujq40hm5"); //TEST FAILED.
+            result = httpInstance.Z_ExportKey(httpInstance, "zs1jmqt4tc4mn7vy2ql6qmwnf4k3u0jjkkdg4s5nawju8jcpfags4ryf2j0ds8jrmdknpsujq40hm5"); 
             Console.WriteLine(result);
 
             Console.WriteLine("Testing Z_ExportViewingKey");
-            result = httpInstance.Z_ExportViewingKey(httpInstance, "zs1jmqt4tc4mn7vy2ql6qmwnf4k3u0jjkkdg4s5nawju8jcpfags4ryf2j0ds8jrmdknpsujq40hm5"); //TEST FAILED.
+            result = httpInstance.Z_ExportViewingKey(httpInstance, "zs1jmqt4tc4mn7vy2ql6qmwnf4k3u0jjkkdg4s5nawju8jcpfags4ryf2j0ds8jrmdknpsujq40hm5"); 
             Console.WriteLine(result);
 
             Console.WriteLine("Testing Z_export_wallet");
@@ -484,7 +472,7 @@ namespace Blockchain
             Console.WriteLine(result);
 
             Console.WriteLine("Testing Send Raw Transaction");
-            result = httpInstance.SendRawTransaction(httpInstance,"010000000110c62f665b7a9df6d793f1b7e1496049b1bdfde205917e2f0c31550d0c4c2cff0000000000ffffffff0180841e00000000001976a9143ae0a346d42bc47a5217d8158169431efd12827c88ac00000000",false);  //ERROR: {"code":-26,"message":"16: bad-txns-inputs-missing"},"id":"curltest"}
+            result = httpInstance.SendRawTransaction(httpInstance,"010000000110c62f665b7a9df6d793f1b7e1496049b1bdfde205917e2f0c31550d0c4c2cff0000000000ffffffff0180841e00000000001976a9143ae0a346d42bc47a5217d8158169431efd12827c88ac00000000",false);  
             Console.WriteLine(result);
 
             Console.WriteLine("Testing Sign Raw Transaction");
@@ -531,6 +519,8 @@ namespace Blockchain
             Console.WriteLine("Testing Z_ValidateAddress");
             result = httpInstance.Z_ValidateAddress(httpInstance,"REeWNkTotZfZHoZWCJ3MSSFLstguxL2Ckw");
             Console.WriteLine(result);
+
+            Console.WriteLine("Testing Complete");
 
         }
     }

@@ -6,10 +6,17 @@ namespace Blockchain
 {
     public partial class WebRequestPostExample
     {
+
+        /*
+        Method used to send a HTTP Request over the network.
+        param: JSON String of the request
+        returns: JSON String of the response from the Komodo Daemon.
+         */
         public string CallHttpRequest(string json_request_data)
         {
              var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:10607/");
-                httpWebRequest.Credentials = new NetworkCredential("user2027525480","pass8bd57d606607e3978406658840c66a1db7b44d24c75991c122589863eaf3893569");
+
+                httpWebRequest.Credentials = new NetworkCredential(username,password);
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "POST";
 
@@ -42,6 +49,10 @@ namespace Blockchain
                 return null;
 
         }
+        
+        /*
+        Creates a JSON String for sending over the network based on the method and parameters passed.
+         */
 
         public String CreateJsonRequest(string MethodName, string parameters)
         {
