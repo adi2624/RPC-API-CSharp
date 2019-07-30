@@ -520,6 +520,62 @@ namespace Blockchain
             result = httpInstance.Z_ValidateAddress(httpInstance,"REeWNkTotZfZHoZWCJ3MSSFLstguxL2Ckw");
             Console.WriteLine(result);
 
+            Console.WriteLine("Testing MigrateCreateBurnTransaction");
+            result = httpInstance.MigrateCreateBurnTransaction(httpInstance,"CFEKDRAGON","REeWNkTotZfZHoZWCJ3MSSFLstguxL2Ckw",7.77,"");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing MigrateConvertToExport");
+            result = httpInstance.MigrateConvertToExport(httpInstance,"0400008085202f8901ffbf4547647abdba819d44699942cb63681be37061f4acd760c0d1e0240d93ad0600000000ffffffff01207e7500000000001976a914173a5c80d8956eed4f1b2d46e3855fc97b3b64cf88ac00000000f36f00000000000000000000000000","CFEKDRAGON");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing MigrateCreateImportTransaction");
+            result = httpInstance.MigrateCreateImportTransaction(httpInstance,"0400008085202f8901ffbf4547647abdba819d44699942cb63681be37061f4acd760c0d1e0240d93ad0600000000ffffffff01207e7500000000001976a914173a5c80d8956eed4f1b2d46e3855fc97b3b64cf88ac00000000f36f00000000000000000000000000","014014502e000000001976a914173a5c80d8956eed4f1b2d46e3855fc97b3b64cf88ac","");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing MigrateCompleteImportTransaction");
+            result = httpInstance.MigrateCompleteImportTransaction(httpInstance,"0400008085202f8901ffbf4547647abdba819d44699942cb63681be37061f4acd760c0d1e0240d93ad0600000000ffffffff01207e7500000000001976a914173a5c80d8956eed4f1b2d46e3855fc97b3b64cf88ac00000000f36f00000000000000000000000000","");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing CheckBurnTransactionSource");
+            result = httpInstance.MigrateCheckBurnTransactionSource(httpInstance,"d19f1c3f7e630966e1d40838c56c8c63a6cbd828d34c3544be5a60b236cf1610");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing CreateNotaryApprovalTransaction");
+            result = httpInstance.MigrateCreateNotaryApprovalTransaction(httpInstance,"d19f1c3f7e630966e1d40838c56c8c63a6cbd828d34c3544be5a60b236cf1610","040000009c6c2e1c0607ea57d44d6d0518cebc341a76e8f294ad6d2844d84f09983b35013bfacfeb3d1a412c1261f59f122fae6ae3d657d3a1871902282519a0b0d08045fbc2f4300c01f0b7820d00e3347c8da4ee614674376cbc45359daa54f9b5493ec64bd45c8fab0220360057fb64b4378bb1a33d9dcf9acf6e5b7c42f6a08db8eb87bfaad001910000143427efb28257954cb4e6596f4e06bdcad43cb9a402000000022cd74dc8b4504472d782478b374fe3fa406f9b9199d5b8ccac7c202a73c812b61016cf36b2605abe44354cd328d8cba6638c6cc53808d4e16609637e3f1c9fd10105");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing SelfImport");
+            result = httpInstance.SelfImport(httpInstance,"REeWNkTotZfZHoZWCJ3MSSFLstguxL2Ckw",0.0);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing Calc_MoM");
+            result = httpInstance.CalcMOM(httpInstance,1000,100.0);
+            Console.WriteLine(result);
+            
+            Console.WriteLine("Testing MoMoMData");
+            result = httpInstance.MoMoMData(httpInstance,"mY_BLOCKCHAIN_FINAL",1350074,533);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing AssetChainProof");
+            result = httpInstance.AssetChainProof(httpInstance,"d19f1c3f7e630966e1d40838c56c8c63a6cbd828d34c3544be5a60b236cf1610");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing getNotarisationsForBlock");
+            result = httpInstance.GetNotarizationsForBlock(httpInstance, 0);
+            Console.WriteLine(result);
+            
+            Console.WriteLine("Testing scanNotarisationsDB");
+            result = httpInstance.ScanNotarisationsDB(httpInstance,1,"my_BLOCKCHAIN_FINAL","1");
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetImports");
+            result = httpInstance.GetImports(httpInstance,"027366fc75eb2adda37f54092f29130d3feafd5bf453b4005fbdc68a27391a8f",0);
+            Console.WriteLine(result);
+
+            Console.WriteLine("Testing GetWalletBurnTransactions");
+            result = httpInstance.GetWalletBurnTransactions(httpInstance,10);
+            Console.WriteLine(result);
+
             Console.WriteLine("Testing Complete");
 
         }
